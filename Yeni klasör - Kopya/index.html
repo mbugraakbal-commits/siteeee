@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apple Tarzı Yönetilebilir Site</title>
+    <style>
+        :root {
+            --primary: #0071e3; /* Apple mavisi */
+            --bg: #f5f5f7;
+            --header-bg: rgba(245, 245, 247, 0.9);
+            --card-bg: #ffffff;
+            --text-main: #1d1d1f;
+            --text-muted: #6e6e73;
+            --accent-soft: #e5f0ff;
+            --border-subtle: #d2d2d7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                system-ui, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #ffffff 0, #f5f5f7 55%, #e5e5ea 100%);
+            color: var(--text-main);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* HEADER */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(18px);
+            background: var(--header-bg);
+            border-bottom: 1px solid rgba(210, 210, 215, 0.6);
+        }
+
+        .header-inner {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 0.7rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+
+        .logo-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #siteLogo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        #logoFallback {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #f5f5f7;
+        }
+
+        .site-titles {
+            display: flex;
+            flex-direction: column;
+            gap: 0.05rem;
+        }
+
+        #siteTitle {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        #siteSubtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .header-right {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        /* LAYOUT */
+        .layout {
+            max-width: 1060px;
+            margin: 1.6rem auto 2.8rem;
+            padding: 0 1.2rem;
+            display: grid;
+            grid-template-columns: 210px minmax(0, 1fr);
+            gap: 1.8rem;
+        }
+
+        aside {
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(210, 210, 215, 0.7);
+            padding: 1rem 0.9rem;
+            height: fit-content;
+            position: sticky;
+            top: 70px;
+        }
+
+        .sidebar-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+        }
+
+        .nav-list {
+            list-style: none;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .nav-list li {
+            margin-bottom: 0.15rem;
+        }
+
+        .nav-link {
+            padding: 0.32rem 0.55rem;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--text-main);
+        }
+
+        .nav-link::before {
+            content: "•";
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-right: 2px;
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .sidebar-footer {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(210, 210, 215, 0.7);
+            padding-top: 0.55rem;
+            margin-top: 0.5rem;
+        }
+
+        main {
+            min-height: 400px;
+        }
+
+        /* SECTIONS + CARDS */
+        .section {
+            border-radius: 32px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(210, 210, 215, 0.7);
+            padding: 1.9rem 1.7rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            align-items: baseline;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .section-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+        }
+
+        .section-body {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* HERO (Apple tarzı) */
+        .two-col {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            gap: 1.4rem;
+            align-items: center;
+        }
+
+        .hero-badge {
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            margin-bottom: 0.7rem;
+        }
+
+        .hero-title {
+            font-size: 2.1rem;
+            font-weight: 600;
+            letter-spacing: -0.04em;
+            margin-bottom: 0.4rem;
+        }
+
+        .hero-text {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            margin-bottom: 0.9rem;
+            max-width: 30rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.7rem;
+        }
+
+        .btn {
+            padding: 0.55rem 1.2rem;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.86rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            transition: transform 0.12s ease, box-shadow 0.12s ease,
+                background 0.12s ease, border-color 0.12s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 113, 227, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 30px rgba(0, 113, 227, 0.45);
+        }
+
+        .btn-outline {
+            background: #ffffff;
+            color: var(--text-main);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-outline:hover {
+            background: #f5f5f7;
+            border-color: #b5b5bd;
+        }
+
+        .pill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-top: 0.7rem;
+            font-size: 0.78rem;
+        }
+
+        .pill {
+            padding: 0.18rem 0.8rem;
+            border-radius: 999px;
+            background: #f5f5f7;
+            color: var(--text-muted);
+            border: 1px solid rgba(210, 210, 215, 0.7);
+        }
+
+        .hero-media {
+            border-radius: 32px;
+            overflow: hidden;
+            min-height: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top, #f5f5f7 0, #e5e5ea 45%, #d2d2d7 100%);
+            position: relative;
+        }
+
+        #heroImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .hero-placeholder {
+            padding: 1.3rem;
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            max-width: 220px;
+        }
+
+        /* CONTACT GRID */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            gap: 1.2rem;
+        }
+
+        .contact-item {
+            font-size: 0.9rem;
+            margin-bottom: 0.55rem;
+        }
+
+        .contact-label {
+            font-weight: 500;
+            font-size: 0.82rem;
+            color: var(--text-main);
+        }
+
+        /* EDITABLE */
+        .editable {
+            border: 1px dashed transparent;
+            border-radius: 8px;
+            padding: 1px 3px;
+            min-width: 10px;
+        }
+
+        .editable:hover {
+            border-color: rgba(0, 0, 0, 0.18);
+            background: rgba(255, 255, 255, 0.9);
+            cursor: text;
+        }
+
+        /* FLOATING PANEL BUTTON */
+        #panelBtn {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            padding: 0.65rem 1.4rem;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.82);
+            color: #f5f5f7;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+            z-index: 40;
+        }
+
+        #panelBtn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.45);
+        }
+
+        /* ADMIN PANEL */
+        #adminPanel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 320px;
+            max-width: 88vw;
+            height: 100%;
+            background: rgba(245, 245, 247, 0.98);
+            box-shadow: -10px 0 35px rgba(0, 0, 0, 0.28);
+            padding: 0.9rem 1rem 1.4rem;
+            display: none;
+            z-index: 50;
+            overflow-y: auto;
+            border-left: 1px solid rgba(210, 210, 215, 0.9);
+        }
+
+        #adminPanel h2 {
+            font-size: 0.95rem;
+            margin-bottom: 0.35rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .panel-section-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin: 0.75rem 0 0.35rem;
+        }
+
+        .panel-group {
+            border-radius: 18px;
+            border: 1px solid rgba(210, 210, 215, 0.9);
+            padding: 0.6rem 0.7rem 0.8rem;
+            margin-bottom: 0.55rem;
+            background: #ffffff;
+        }
+
+        .panel-group label {
+            font-size: 0.78rem;
+            display: block;
+            margin-bottom: 0.2rem;
+            color: var(--text-main);
+        }
+
+        .panel-group input[type="text"],
+        .panel-group input[type="color"] {
+            width: 100%;
+            padding: 0.28rem 0.4rem;
+            border-radius: 7px;
+            border: 1px solid var(--border-subtle);
+            font-size: 0.8rem;
+            background: #f5f5f7;
+        }
+
+        .panel-group input[type="file"] {
+            width: 100%;
+            font-size: 0.8rem;
+        }
+
+        .btn-sm {
+            width: 100%;
+            margin-top: 0.35rem;
+            padding: 0.45rem 0.5rem;
+            font-size: 0.78rem;
+        }
+
+        .btn-danger {
+            background: #ff3b30;
+            color: white;
+        }
+
+        .btn-muted {
+            background: #e5e5ea;
+            color: #1d1d1f;
+        }
+
+        .panel-footer {
+            margin-top: 0.6rem;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding: 1.2rem 1rem 1.8rem;
+        }
+
+        footer span {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 1rem;
+                margin-top: 1.1rem;
+            }
+
+            aside {
+                position: static;
+                order: -1;
+            }
+
+            .two-col,
+            .contact-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .hero-media {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+<header id="headerContent">
+    <div class="header-inner">
+        <div class="logo-area">
+            <div class="logo-circle">
+                <img id="siteLogo" alt="Logo" />
+                <span id="logoFallback">LOGO</span>
+            </div>
+            <div class="site-titles">
+                <div id="siteTitle" class="editable">
+                    Sitenin Başlığı Buraya
+                </div>
+                <div id="siteSubtitle" class="editable">
+                    Kısa açıklama / slogan buraya yazılabilir.
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            İçeriği düzenlemek için sağ alttaki <strong>Yönet</strong> butonuna basın.
+        </div>
+    </div>
+</header>
+
+<div class="layout">
+    <aside>
+        <div class="sidebar-title">BÖLÜMLER</div>
+        <ul class="nav-list" id="sidebarNav">
+            <!-- JS ile doldurulacak -->
+        </ul>
+        <div class="sidebar-footer">
+            Metinlerin üzerine tıklayarak düzenleyin. <br />
+            Değişiklikleri kaydetmek için <strong>Yönet &gt; Tümünü Kaydet</strong>.
+        </div>
+    </aside>
+
+    <main id="mainContent">
+        <!-- HERO -->
+        <section id="hero" class="section" data-section-title="Anasayfa">
+            <div class="two-col">
+                <div>
+                    <div class="hero-badge editable">
+                        Yeni • Sizin için tasarlandı
+                    </div>
+                    <h1 class="hero-title editable">
+                        Sade, güçlü ve kontrol sizde.
+                    </h1>
+                    <p class="hero-text editable">
+                        Bu alanı; kendinizi, kurumunuzu veya projenizi tıpkı Apple
+                        sayfalarındaki gibi sade ve net bir dille anlatmak için
+                        kullanabilirsiniz. Gereksiz hiçbir şey yok, yalnızca önemli olanlar var.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary editable">
+                            Başlayalım
+                        </button>
+                        <button class="btn btn-outline editable">
+                            Daha Fazla Bilgi
+                        </button>
+                    </div>
+                    <div class="pill-list">
+                        <span class="pill editable">Akademi</span>
+                        <span class="pill editable">Ar-Ge</span>
+                        <span class="pill editable">Danışmanlık</span>
+                    </div>
+                </div>
+                <div class="hero-media">
+                    <img id="heroImage" alt="Hero görseli" />
+                    <div class="hero-placeholder">
+                        Buraya Apple tarzı bir görsel
+                        (cihaz, ofis, soyut bir görsel vb.) ekleyebilirsiniz. <br /><br />
+                        Yönet &gt; Hero Görseli kısmından yükleyin.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HAKKIMIZDA -->
+        <section id="about" class="section" data-section-title="Hakkımızda">
+            <div class="section-header">
+                <div class="section-title editable">Hakkımızda</div>
+                <div class="section-tag">Genel Bilgi</div>
+            </div>
+            <div class="section-body">
+                <p class="editable">
+                    Bu bölümde kendinizden, ekibinizden veya kurumunuzdan detaylı biçimde
+                    bahsedebilirsiniz. Akademik arka plan, uzmanlık alanları, yürütülen
+                    projeler ve iş birlikleri gibi başlıkları burada tutabilirsiniz.
+                </p>
+                <p class="editable">
+                    Apple tarzı sade bir dil tercih ederek, az ama öz cümlelerle kimin
+                    ne yaptığını, neye değer verdiğinizi ve nasıl bir yaklaşım benimsediğinizi
+                    anlatabilirsiniz.
+                </p>
+            </div>
+        </section>
+
+        <!-- HİZMETLER -->
+        <section id="services" class="section" data-section-title="Hizmetler">
+            <div class="section-header">
+                <div class="section-title editable">Hizmetler / Çalışma Alanları</div>
+                <div class="section-tag">Neler Yapıyoruz?</div>
+            </div>
+            <div class="section-body">
+                <p class="editable">
+                    Aşağıya hizmetlerinizi veya çalışma alanlarınızı madde madde
+                    yazabilirsiniz:
+                </p>
+                <ul class="editable">
+                    <li>Bilgi işlem altyapısı ve ağ tasarımı</li>
+                    <li>Yapay zeka ve veri analitiği projeleri</li>
+                    <li>Kablosuz haberleşme ve sinyal işleme</li>
+                    <li>Eğitim, seminer ve atölye çalışmaları</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- İLETİŞİM -->
+        <section id="contact" class="section" data-section-title="İletişim">
+            <div class="section-header">
+                <div class="section-title editable">İletişim Bilgileri</div>
+                <div class="section-tag">Ulaşın</div>
+            </div>
+            <div class="section-body contact-grid">
+                <div>
+                    <div class="contact-item">
+                        <div class="contact-label">E-posta</div>
+                        <div class="editable">ornek@alanadiniz.com</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Telefon</div>
+                        <div class="editable">+90 (___) ___ __ __</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Adres</div>
+                        <div class="editable">
+                            Şehir / Ülke – Kurum veya bölüm adı buraya yazılabilir.
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="contact-item">
+                        <div class="contact-label">Notlar</div>
+                        <div class="editable">
+                            Buraya randevu koşulları, çalışma saatleri, online
+                            görüşme imkanları gibi detayları ekleyebilirsiniz.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<footer>
+    © <span id="year"></span> <span class="editable">Sitenizin İsmi</span>. Tüm hakları saklıdır.
+</footer>
+
+<!-- Admin Panel -->
+<div id="adminPanel">
+    <h2>Yönetim Paneli</h2>
+
+    <div class="panel-section-title">İçerik</div>
+    <div class="panel-group">
+        <p style="font-size:0.78rem; margin-bottom:0.35rem;">
+            Düzenlemek istediğiniz metnin üzerine tıklayıp değişiklik yapın.
+            Ardından buradan <strong>Tümünü Kaydet</strong> butonuna basın.
+        </p>
+        <button class="btn btn-primary btn-sm" onclick="saveSite()">💾 Tümünü Kaydet</button>
+        <button class="btn btn-muted btn-sm" onclick="buildSidebarNav()">🔁 Menüyü Yenile</button>
+        <button class="btn btn-danger btn-sm" onclick="resetSite()">🗑 Her Şeyi Sıfırla</button>
+    </div>
+
+    <div class="panel-section-title">Logo ve Görseller</div>
+    <div class="panel-group">
+        <label for="logoInput">Logo Yükle</label>
+        <input type="file" id="logoInput" accept="image/*" />
+        <small style="font-size:0.75rem;">Kare veya düz logo daha iyi görünür.</small>
+        <br /><br />
+        <label for="heroInput">Hero Görseli</label>
+        <input type="file" id="heroInput" accept="image/*" />
+        <small style="font-size:0.75rem;">Üstteki büyük görsel alanı için.</small>
+    </div>
+
+    <div class="panel-section-title">Tema</div>
+    <div class="panel-group">
+        <label for="primaryColor">Ana Renk</label>
+        <input type="color" id="primaryColor" />
+        <small style="font-size:0.75rem;">
+            Butonlar, etiketler ve vurgu alanları bu renge göre boyanacaktır.
+        </small>
+    </div>
+
+    <div class="panel-section-title">Yeni Bölüm</div>
+    <div class="panel-group">
+        <label for="newSectionTitle">Bölüm Başlığı</label>
+        <input type="text" id="newSectionTitle" placeholder="Örn: Projeler, Ekibimiz..." />
+        <button class="btn btn-primary btn-sm" onclick="addNewSection()">➕ Bölüm Ekle</button>
+        <small style="font-size:0.75rem;">
+            Yeni bölüm, ana içeriğin en altına eklenecektir. Menüyü güncellemek
+            için yukarıdaki <strong>Menüyü Yenile</strong> butonuna basın veya Kaydet
+            sonrası sayfayı yenileyin.
+        </small>
+    </div>
+
+    <div class="panel-section-title">Panel</div>
+    <div class="panel-group">
+        <button class="btn btn-muted btn-sm" onclick="closePanel()">Paneli Kapat</button>
+        <div class="panel-footer">
+            Tüm veriler yalnızca bu bilgisayardaki tarayıcınızda saklanır
+            (localStorage). Sunucuya gönderilmez.
+        </div>
+    </div>
+</div>
+
+<button id="panelBtn" onclick="openPanel()">⚙ Yönet</button>
+
+<script>
+    const STORAGE_MAIN_KEY = "managed_site_main_html";
+    const STORAGE_HEADER_KEY = "managed_site_header_html";
+    const STORAGE_THEME_KEY = "managed_site_theme";
+
+    function initEditable() {
+        document.querySelectorAll(".editable").forEach((el) => {
+            el.setAttribute("contenteditable", "true");
+        });
+    }
+
+    function buildSidebarNav() {
+        const nav = document.getElementById("sidebarNav");
+        if (!nav) return;
+        nav.innerHTML = "";
+        const sections = document.querySelectorAll(
+            "#mainContent .section[data-section-title]"
+        );
+        sections.forEach((section) => {
+            const title = section.getAttribute("data-section-title") || "Bölüm";
+            const id = section.id || "";
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.className = "nav-link";
+            a.textContent = title;
+            if (id) {
+                a.href = "#" + id;
+            }
+            li.appendChild(a);
+            nav.appendChild(li);
+        });
+    }
+
+    function openPanel() {
+        document.getElementById("adminPanel").style.display = "block";
+    }
+
+    function closePanel() {
+        document.getElementById("adminPanel").style.display = "none";
+    }
+
+    function saveSite() {
+        const header = document.getElementById("headerContent");
+        const main = document.getElementById("mainContent");
+        if (header) {
+            localStorage.setItem(STORAGE_HEADER_KEY, header.innerHTML);
+        }
+        if (main) {
+            localStorage.setItem(STORAGE_MAIN_KEY, main.innerHTML);
+        }
+
+        const color = document.getElementById("primaryColor")?.value;
+        const themeData = { primary: color || null };
+        localStorage.setItem(STORAGE_THEME_KEY, JSON.stringify(themeData));
+
+        alert("Değişiklikler kaydedildi ✔");
+    }
+
+    function resetSite() {
+        const ok = confirm(
+            "Tüm içerik ve özelleştirmeler sıfırlanacak. Emin misiniz?"
+        );
+        if (!ok) return;
+
+        localStorage.removeItem(STORAGE_HEADER_KEY);
+        localStorage.removeItem(STORAGE_MAIN_KEY);
+        localStorage.removeItem(STORAGE_THEME_KEY);
+        location.reload();
+    }
+
+    function addNewSection() {
+        const input = document.getElementById("newSectionTitle");
+        if (!input) return;
+        const title = (input.value || "").trim() || "Yeni Bölüm";
+        const main = document.getElementById("mainContent");
+        if (!main) return;
+
+        const id =
+            "section_" +
+            title
+                .toLowerCase()
+                .replace(/\s+/g, "-")
+                .replace(/[^a-z0-9\-ğüşöçı]/g, "") +
+            "_" +
+            Date.now().toString(36);
+
+        const section = document.createElement("section");
+        section.className = "section";
+        section.id = id;
+        section.setAttribute("data-section-title", title);
+
+        section.innerHTML = `
+            <div class="section-header">
+                <div class="section-title editable">${title}</div>
+                <div class="section-tag">Ek Bölüm</div>
+            </div>
+            <div class="section-body">
+                <p class="editable">
+                    Bu, sonradan eklenmiş bir bölümdür. Metni ve yapıyı istediğiniz gibi
+                    değiştirebilirsiniz. Altına listeler, paragraflar, açıklamalar
+                    ekleyebilirsiniz.
+                </p>
+            </div>
+        `;
+
+        main.appendChild(section);
+        initEditable();
+        buildSidebarNav();
+        input.value = "";
+        alert("Yeni bölüm eklendi. Değişikliklerin kalıcı olması için Tümünü Kaydet'i unutmayın ✔");
+    }
+
+    function applyThemeFromStorage() {
+        const raw = localStorage.getItem(STORAGE_THEME_KEY);
+        if (!raw) return;
+        try {
+            const theme = JSON.parse(raw);
+            if (theme && theme.primary) {
+                document.documentElement.style.setProperty(
+                    "--primary",
+                    theme.primary
+                );
+                const colorInput = document.getElementById("primaryColor");
+                if (colorInput) {
+                    colorInput.value = theme.primary;
+                }
+            }
+        } catch (e) {
+            console.warn("Tema okunamadı:", e);
+        }
+    }
+
+    function setupImageInputs() {
+        const logoInput = document.getElementById("logoInput");
+        const heroInput = document.getElementById("heroInput");
+
+        if (logoInput) {
+            logoInput.addEventListener("change", (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const logoImg = document.getElementById("siteLogo");
+                    const fallback = document.getElementById("logoFallback");
+                    if (logoImg) {
+                        logoImg.src = ev.target.result;
+                        logoImg.style.display = "block";
+                    }
+                    if (fallback) {
+                        fallback.style.display = "none";
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        if (heroInput) {
+            heroInput.addEventListener("change", (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const heroImg = document.getElementById("heroImage");
+                    const placeholder = document.querySelector(".hero-placeholder");
+                    if (heroImg) {
+                        heroImg.src = ev.target.result;
+                        heroImg.style.display = "block";
+                    }
+                    if (placeholder) {
+                        placeholder.style.display = "none";
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    }
+
+    function restoreSiteFromStorage() {
+        const header = document.getElementById("headerContent");
+        const main = document.getElementById("mainContent");
+
+        const savedHeader = localStorage.getItem(STORAGE_HEADER_KEY);
+        const savedMain = localStorage.getItem(STORAGE_MAIN_KEY);
+
+        if (savedHeader && header) {
+            header.innerHTML = savedHeader;
+        }
+        if (savedMain && main) {
+            main.innerHTML = savedMain;
+        }
+
+        const heroImg = document.getElementById("heroImage");
+        const placeholder = document.querySelector(".hero-placeholder");
+        if (heroImg && heroImg.src && heroImg.src.startsWith("data:")) {
+            heroImg.style.display = "block";
+            if (placeholder) placeholder.style.display = "none";
+        }
+
+        const logoImg = document.getElementById("siteLogo");
+        const fallback = document.getElementById("logoFallback");
+        if (logoImg && logoImg.src && logoImg.src.startsWith("data:")) {
+            logoImg.style.display = "block";
+            if (fallback) fallback.style.display = "none";
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("year").textContent =
+            new Date().getFullYear().toString();
+
+        restoreSiteFromStorage();
+        initEditable();
+        buildSidebarNav();
+        applyThemeFromStorage();
+        setupImageInputs();
+
+        const colorInput = document.getElementById("primaryColor");
+        if (colorInput) {
+            const currentPrimary =
+                getComputedStyle(document.documentElement).getPropertyValue(
+                    "--primary"
+                ) || "#0071e3";
+            colorInput.value = currentPrimary.trim();
+            colorInput.addEventListener("input", (e) => {
+                const val = e.target.value;
+                document.documentElement.style.setProperty("--primary", val);
+            });
+        }
+    });
+</script>
+</body>
+</html>
